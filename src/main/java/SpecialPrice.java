@@ -1,29 +1,29 @@
 public class SpecialPrice {
     private int unitPrice;
-    private int specialBatchSize;
-    private int specialPrice;
+    private int batchSize;
+    private int batchPrice;
 
-    public SpecialPrice(int unitPrice, int specialBatchSize, int specialPrice) {
+    public SpecialPrice(int unitPrice, int batchSize, int batchPrice) {
         this.unitPrice = unitPrice;
-        this.specialBatchSize = specialBatchSize;
-        this.specialPrice = specialPrice;
+        this.batchSize = batchSize;
+        this.batchPrice = batchPrice;
     }
 
     public SpecialPrice(int unitPrice) {
         this.unitPrice = unitPrice;
-        this.specialBatchSize = 1;
-        this.specialPrice = unitPrice;
+        this.batchSize = 1;
+        this.batchPrice = unitPrice;
     }
 
     public int getUnitPrice() {
         return unitPrice;
     }
 
-    public int getSpecialBatchSize() {
-        return specialBatchSize;
+    public int getBatchSize() {
+        return batchSize;
     }
 
-    public int getSpecialPrice() {
-        return specialPrice;
+    public int getBatchPrice() {
+        return batchPrice;
     }
 }

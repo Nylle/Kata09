@@ -5,6 +5,7 @@ import org.junit.rules.ExpectedException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -15,13 +16,23 @@ public class SpecialPriceRuleSetTest {
 
     @Test
     public void throwsIfRuleNotFound() {
-        String unknownArticleName = "A";
-
         thrown.expect(IllegalArgumentException.class);
-        thrown.expectMessage(equalTo(String.format("No price rule found for '%s'", unknownArticleName)));
+        thrown.expectMessage(equalTo("No price rule found for 'A'"));
 
         SpecialPriceRuleSet sut = new SpecialPriceRuleSet(new HashMap<>());
-        sut.calculatePriceFor(unknownArticleName, 1);
+        sut.calculateTotalPrice(asList("A"));
+    }
+
+    @Test
+    public void canHandleUnitPrice() {
+        Map<String, SpecialPrice> priceRules = new HashMap<>();
+        priceRules.put("A", new SpecialPrice(10));
+
+        SpecialPriceRuleSet sut = new SpecialPriceRuleSet(priceRules);
+
+        assertThat(sut.calculateTotalPrice(asList("A")), is(10));
+        assertThat(sut.calculateTotalPrice(asList("A", "A")), is(20));
+        assertThat(sut.calculateTotalPrice(asList("A", "A", "A")), is(30));
     }
 
     @Test
@@ -31,22 +42,10 @@ public class SpecialPriceRuleSetTest {
 
         SpecialPriceRuleSet sut = new SpecialPriceRuleSet(priceRules);
 
-        assertThat(sut.calculatePriceFor("A", 1), is(10));
-        assertThat(sut.calculatePriceFor("A", 2), is(20));
-        assertThat(sut.calculatePriceFor("A", 3), is(20));
-        assertThat(sut.calculatePriceFor("A", 4), is(30));
-    }
-
-    @Test
-    public void canHandleSpecialPriceWithoutSpecialPrice() {
-        Map<String, SpecialPrice> priceRules = new HashMap<>();
-        priceRules.put("A", new SpecialPrice(10));
-
-        SpecialPriceRuleSet sut = new SpecialPriceRuleSet(priceRules);
-
-        assertThat(sut.calculatePriceFor("A", 1), is(10));
-        assertThat(sut.calculatePriceFor("A", 2), is(20));
-        assertThat(sut.calculatePriceFor("A", 3), is(30));
+        assertThat(sut.calculateTotalPrice(asList("A")), is(10));
+        assertThat(sut.calculateTotalPrice(asList("A", "A")), is(20));
+        assertThat(sut.calculateTotalPrice(asList("A", "A", "A")), is(20));
+        assertThat(sut.calculateTotalPrice(asList("A", "A", "A", "A")), is(30));
     }
 
     @Test
@@ -56,8 +55,8 @@ public class SpecialPriceRuleSetTest {
 
         SpecialPriceRuleSet sut = new SpecialPriceRuleSet(priceRules);
 
-        assertThat(sut.calculatePriceFor("A", 1), is(0));
-        assertThat(sut.calculatePriceFor("A", 2), is(0));
+        assertThat(sut.calculateTotalPrice(asList("A")), is(0));
+        assertThat(sut.calculateTotalPrice(asList("A", "A")), is(0));
     }
 
 

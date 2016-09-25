@@ -17,12 +17,7 @@ public class CheckOut {
     }
 
     public int total() {
-        return skus.stream()
-                .collect(groupingBy(x -> x, counting()))
-                .entrySet().stream()
-                .map(x -> ruleSet.calculatePriceFor(x.getKey(), x.getValue()))
-                .mapToInt(Integer::intValue)
-                .sum();
+        return ruleSet.calculateTotalPrice(skus);
     }
 }
 

@@ -1,12 +1,11 @@
-import java.util.Map;
+import java.util.Collection;
 
 public interface IPriceRuleSet {
     /***
-     * Calculates the price for an article with the provided name and quantity.
+     * Calculates the total price for a collection of SKUs.
      *
-     * @param name
-     * @param quantity
+     * @param skus
      * @return
      */
-    int calculatePriceFor(String name, long quantity);
+    int calculateTotalPrice(Collection<String> skus);
 }

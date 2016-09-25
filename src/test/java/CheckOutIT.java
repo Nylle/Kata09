@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestPrice {
+public class CheckOutIT {
     public int calculatePrice(String goods) {
         CheckOut co = new CheckOut(givenPriceRuleSet());
         for(int i=0; i<goods.length(); i++) {
